@@ -12,12 +12,11 @@ def main(args):
     with open(args.input, 'r', encoding=args.encoding) as infile:
         for line in infile:
             cnt_inline += 1
-            fields = line.split('\t')
-            src, tgt = fields[0].strip(), fields[1].strip()      
-
-            if src not in existing_data and tgt not in existing_data:
+            line = line.strip()
+            
+            if line not in existing_data:
                 cnt_outline += 1
-                print(f"{src}\t{tgt}")
+                print(line)
     print(f"# Input sent. ({cnt_inline}) > # Output sent. ({cnt_outline})", file=sys.stderr)
 
 if __name__ == '__main__':
