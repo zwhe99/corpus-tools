@@ -2,20 +2,15 @@
 
 import argparse
 import sys
-from langdetect import detect
-from polyglot.detect import Detector
-from polyglot.detect.base import logger as polyglot_logger
-polyglot_logger.setLevel("ERROR")
+import gcld3
+
+detector = gcld3.NNetLanguageIdentifier(min_num_bytes=0, max_num_bytes=1000)
 
 def detect_lang(text, lang):
-    try:
-        for i, l in enumerate(Detector(text, quiet=True).languages):
-            if l.code == lang and i == 0:
-                return True
-        if detect(text) == lang:
-            return True
-        return False
-    except:
+    result = detector.FindLanguage(text=text)
+    if result.language == lang and result.is_reliable:
+        return True
+    else:
         return False
 
 def main(args):
