@@ -1,0 +1,1 @@
+# cat liv4ever.en-liv.tmx | grep "<tuv xml:lang=\"liv\"><seg>"  | awk -v FS="(<seg>|</seg>)" '{print $2}' | wc -l
