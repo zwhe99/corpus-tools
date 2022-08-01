@@ -1,17 +1,9 @@
 # modified from https://github.com/microsoft/MASS/blob/master/MASS-unsupNMT/filter_noisy_data.py
 
+import re
 import argparse
 import sys
-import gcld3
 
-detector = gcld3.NNetLanguageIdentifier(min_num_bytes=0, max_num_bytes=1000)
-
-def detect_lang(text, lang, need_reliable):
-    result = detector.FindLanguage(text=text)
-    if result.language == lang and result.is_reliable:
-        return True
-    else:
-        return False
 
 def main(args):
     cnt_inline = 0
@@ -20,17 +12,16 @@ def main(args):
         for line in infile:
             cnt_inline += 1
 
-            if detect_lang(line, args.lang, args.reliable):
+            if line.strip() == args.pattern.strip():
+                continue
+            else:
                 cnt_outline += 1
                 print(line, end="")
-
     print(f"# Input sent. ({cnt_inline}) > # Output sent. ({cnt_outline})", file=sys.stderr)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", required=True, type=str)
+    parser.add_argument("--pattern", required=True, type=str)
     parser.add_argument('--encoding', default='utf-8', help='character encoding for input/output')
-    parser.add_argument('--lang', type=str, help='Language', required=True)
-    parser.add_argument('--reliable', action="store_true", help='whether language recognition is required to be reliable')
-
     main(parser.parse_args())
