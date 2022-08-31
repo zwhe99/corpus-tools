@@ -2,7 +2,7 @@ import unicodedata
 import sys
 
 def which_norm(s):
-    all_norms = ["NFC", "NFKC", "NFKC", "NFKD"]
+    all_norms = ["NFC", "NFKC", "NFD", "NFKD"]
 
     res_norm = []
 
