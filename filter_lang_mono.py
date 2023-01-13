@@ -24,6 +24,12 @@ def main(args):
                 cnt_outline += 1
                 print(line, end="")
 
+            if args.progress and cnt_inline % 100000 == 0:
+                print(cnt_inline, file=sys.stderr)
+            
+            if cnt_outline == args.max_n:
+                break
+
     print(f"# Input sent. ({cnt_inline}) > # Output sent. ({cnt_outline})", file=sys.stderr)
 
 if __name__ == '__main__':
@@ -32,5 +38,7 @@ if __name__ == '__main__':
     parser.add_argument('--encoding', default='utf-8', help='character encoding for input/output')
     parser.add_argument('--lang', type=str, help='Language', required=True)
     parser.add_argument('--reliable', action="store_true", help='whether language recognition is required to be reliable')
+    parser.add_argument('--progress', action="store_true")
+    parser.add_argument('--max-n', type=int, help='Max output # sent.', default=-1)
 
     main(parser.parse_args())
